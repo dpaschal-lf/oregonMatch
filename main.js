@@ -59,7 +59,7 @@ var cardTypes = {
             displayEffect('ruh roh!');
         },
         onMatch: function(){
-            shiftLifeIndicator(-1);
+            shiftLifeIndicator(-5);
             ailmentSound.play();
             displayEffect('You are exhausted');
         },
@@ -72,8 +72,10 @@ var cardTypes = {
             displayEffect('Ugh, that water was foul...');
         },
         onMatch: function(){
-            shiftLifeIndicator(-1);
-            drainLife(5);
+            shiftLifeIndicator(-5);
+            drainLife(-10, function(){
+                displayEffect('thank god that\'s over')
+            });
             ailmentSound.play();
             displayEffect('You Have Dysentery...');
         },
@@ -87,7 +89,9 @@ var cardTypes = {
             displayEffect('You might have a fever');
         },
         onMatch: function(){
-            shiftLifeIndicator(-1);
+            drainLife(-20, function(){
+                displayEffect('your fever has broken!');
+            });
             ailmentSound.play();
             displayEffect('You Have Typhoid...');
         },
@@ -100,7 +104,9 @@ var cardTypes = {
             displayEffect('You don\'t feel so good...');
         },
         onMatch: function(){
-            shiftLifeIndicator(-1);
+            drainLife(-10, function(){
+                displayEffect( chooseRandom(['a passerby offers you a cure','you feel better','a witchdoctor heals you!']));
+            });
             ailmentSound.play();
             displayEffect('You Have Measles...');
         },
@@ -126,7 +132,7 @@ var cardTypes = {
             displayEffect(chooseRandom(['Looks like a cubby hole!','you discover something...','something smells good...']));
         },
         onMatch: function(){
-            shiftLifeIndicator(-1);
+            shiftLifeIndicator(5);
             cardMatchSound.play();
             displayEffect('You Feel Full!');
         },
@@ -136,10 +142,10 @@ var cardTypes = {
         count: 2, 
         image: 'restStop.png',
         onFirstclick: function(){
-            displayEffect(chooseRandom(['This looks promising','this might be a safe place...','a nap here could\'t hurt, right?']));
+            displayEffect(chooseRandom(['This looks promising','this might be a safe place...','a nap here couldn\'t hurt, right?']));
         },
         onMatch: function(){
-            shiftLifeIndicator(-1);
+            shiftLifeIndicator(5);
             cardMatchSound.play();
             displayEffect('You Feel Rested!');
         },
@@ -185,7 +191,7 @@ var cardTypes = {
             displayEffect('This area seems to have game');
         },
         onMatch: function(){
-            shiftLifeIndicator(-1);
+            shiftLifeIndicator(10);
             cardMatchSound.play();
             displayEffect('You Gain Food From Your Hunt!');
         },
@@ -261,11 +267,25 @@ var defaultMethods = {
 }
 
 
-function playSound(src, volume=1){
+function playSound(src, volume=1, repeat=false){
     var sound = new Audio();
     sound.src=src;
     sound.volume=volume;
+    var pause = false;
+    if(repeat){
+        sound.onpause = function(){
+            if(!pause){
+                sound.play();
+            }
+        }
+    }
     sound.play();
+
+    function stopSound(){
+        pause = true;
+        sound.pause();
+    }
+    return stopSound;
 }
 
 
@@ -292,8 +312,26 @@ function shiftLifeIndicator(amount){
     healthData.currentHealth+=amount;
     checkForDeath();
 }
-function drainLife(totalAmount){
-
+function drainLife(totalAmount, callback, timerPerTick=1000){
+    if(callback===undefined){
+        callback = function(){};
+    }
+    var totalAbs = Math.abs(totalAmount);
+    var shiftDirection = totalAmount / totalAbs;
+    var timer = null;
+    var heartbeatStopFunction = playSound('http://depts.washington.edu/physdx/audio/normal.mp3', .6, true);
+    function drainLifePerInterval(){
+        shiftLifeIndicator(shiftDirection);
+        totalAbs--;
+        console.log(totalAbs);
+        if(totalAbs===0){
+            clearInterval(timer);
+            heartbeatStopFunction();
+            callback();
+        }
+    }
+    drainLifePerInterval();
+    timer = setInterval(drainLifePerInterval, timerPerTick);
 }
 
 
