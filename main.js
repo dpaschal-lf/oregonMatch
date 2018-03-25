@@ -354,6 +354,11 @@ function drainLife(totalAmount, callback, timerPerTick=1000){
     var totalAbs = Math.abs(totalAmount);
     var shiftDirection = totalAmount / totalAbs;
     var timer = null;
+    if(totalAmount<0){
+        $("#rightSideBar").addClass('ailing');
+    } else {
+        $("#rightSideBar").addClass('healing');
+    }
     var heartbeatStopFunction = playSound('http://depts.washington.edu/physdx/audio/normal.mp3', .6, true);
     function drainLifePerInterval(){
         shiftLifeIndicator(shiftDirection);
@@ -362,6 +367,7 @@ function drainLife(totalAmount, callback, timerPerTick=1000){
         if(totalAbs===0 || healthData.currentHealth<=0){
             clearInterval(timer);
             heartbeatStopFunction();
+            $("#rightSideBar").removeClass('ailing healing');
             callback();
         }
     }
