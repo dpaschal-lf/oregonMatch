@@ -1,3 +1,5 @@
+var cardsToUse = 9;
+
 var cardClickSound = new Audio();
 cardClickSound.src = 'soundFX/card_clicked.wav';
 cardClickSound.volume = 0.2;
@@ -11,9 +13,35 @@ cardMatchSound.src = 'soundFX/match-made.wav';
 cardMatchSound.volume = .6;
 
 var themeSong = new Audio();
-themeSong.src = 'soundFX/main_song.mp3';
-themeSong.volume = .5;
+// themeSong.src = 'soundFX/main_song.mp3';
+// themeSong.volume = .5;
+// themeSong.onpause = function(){
+//     this.play();
+// }
+$(document).ready(initializeApplication);
 
+function initializeApplication(){
+    var cards = dealCards(cardTypes, cardsToUse);
+    $('#gameBody').append(cards);
+    var timerBars = populateTimerBar(cards);
+    $('#rightSideBar').append(timerBars);
+    initializeHealthData(timerBars);
+    applyDefaultsToAllCardData(cardTypes, defaultMethods);
+
+}
+
+
+var healthData;
+function initializeHealthData(segments){
+    var reversedSegments = [];
+    for(var segmentIndex=segments.length-1; segmentIndex>=0; segmentIndex--){
+        reversedSegments.push( segments[segmentIndex]);
+    }
+    healthData = {
+        segments: reversedSegments,
+        currentHealth: reversedSegments.length
+    }    
+}
 var ailmentSound = new Audio();
 ailmentSound.src = 'soundFX/ailment.wav';
 
@@ -21,15 +49,262 @@ var winSound = new Audio();
 winSound.src = 'soundFX/win_sound.wav';
 
 var cardTypeArray = ['exhaustion','exhaustion','dysentery','dysentery','typhoid','typhoid','measles','measles','freshWater','freshWater','heartyFood','heartyFood','restStop','restStop','oxen','oxen','river','river','tree','tree','rifle','rifle','cactus','cactus','bovineSkull','bovineSkull','deer','deer','tumbleweed','tumbleweed'];
+
+var cardTypes = {
+    exhaustion: {
+        name: 'exhaustion',
+        count: 2, 
+        image: 'exhaustion.png',
+        onClick: function(){
+            displayEffect('ruh roh!');
+        },
+        onMatch: function(){
+            shiftLifeIndicator(-1);
+            ailmentSound.play();
+            displayEffect('You are exhausted');
+        },
+    },
+    dysentery: {
+        name: 'dysentery',
+        count: 2, 
+        image: 'dysentery.png',
+        onfirstclick: function(){
+            displayEffect('Ugh, that water was foul...');
+        },
+        onMatch: function(){
+            shiftLifeIndicator(-1);
+            drainLife(5);
+            ailmentSound.play();
+            displayEffect('You Have Dysentery...');
+        },
+
+    },
+    typhoid: {
+        name: 'typhoid',
+        count: 2, 
+        image: 'tyhpoid.png',
+        onFirstclick: function(){
+            displayEffect('You might have a fever');
+        },
+        onMatch: function(){
+            shiftLifeIndicator(-1);
+            ailmentSound.play();
+            displayEffect('You Have Typhoid...');
+        },
+    },
+    measles: {
+        name: 'measles',
+        count: 2, 
+        image: 'measles.png',
+        onFirstclick: function(){
+            displayEffect('You don\'t feel so good...');
+        },
+        onMatch: function(){
+            shiftLifeIndicator(-1);
+            ailmentSound.play();
+            displayEffect('You Have Measles...');
+        },
+    },
+    freshWater: {
+        name: 'freshWater',
+        count: 2, 
+        image: 'freshWater.png',
+        onFirstclick: function(){
+            displayEffect(chooseRandom(['Is that a well?','something glimmers ahead', 'is that water?', 'you have a good feeling']));
+        },
+        onMatch: function(){
+            shiftLifeIndicator(10);
+            cardMatchSound.play();
+            displayEffect('You Feel Hydrated!');
+        },
+    },
+    heartyFood: {
+        name: 'heartyFood',
+        count: 2, 
+        image: 'heartyFood.png',
+        onFirstclick: function(){
+            displayEffect(chooseRandom(['Looks like a cubby hole!','you discover something...','something smells good...']));
+        },
+        onMatch: function(){
+            shiftLifeIndicator(-1);
+            cardMatchSound.play();
+            displayEffect('You Feel Full!');
+        },
+    },
+    restStop: {
+        name: 'restStop',
+        count: 2, 
+        image: 'restStop.png',
+        onFirstclick: function(){
+            displayEffect(chooseRandom(['This looks promising','this might be a safe place...','a nap here could\'t hurt, right?']));
+        },
+        onMatch: function(){
+            shiftLifeIndicator(-1);
+            cardMatchSound.play();
+            displayEffect('You Feel Rested!');
+        },
+    },
+    oxen: {
+        name: 'oxen',
+        count: 2, 
+        image: 'oxen.png',
+        onFirstclick: function(){
+            displayEffect('A quadraped is in the distance');
+        },
+        onMatch: function(){
+            displayEffect('You see oxen');
+        },
+    },
+    river: {
+        name: 'river',
+        count: 2, 
+        image: 'river.png',
+        onFirstclick: function(){
+            displayEffect(chooseRandom(['A band of silver glistens in the distance', 'you hear the sound of running water', 'might be a river ahead']));
+        },
+        onMatch: function(){
+            displayEffect('You encounter a muddy river');
+        },
+    },
+    tree: {
+        name: 'tree',
+        count: 2, 
+        image: 'tree.png',
+        onFirstclick: function(){
+            displayEffect('A slender thing stands in the distance');
+        },
+        onMatch: function(){
+            displayEffect('You encounter a lone tree');
+        },
+    },
+    rifle: {
+        name: 'rifle',
+        count: 2, 
+        image: 'rifle.png',
+        onFirstclick: function(){
+            displayEffect('This area seems to have game');
+        },
+        onMatch: function(){
+            shiftLifeIndicator(-1);
+            cardMatchSound.play();
+            displayEffect('You Gain Food From Your Hunt!');
+        },
+    },
+    cactus: {
+        name: 'cactus',
+        count: 2, 
+        image: 'cactus.png',
+        onFirstclick: function(){
+            displayEffect('A forked thing stands in the distance');
+        },
+        onMatch: function(){
+            displayEffect('You see a lone cactus');
+        },
+    },
+    bovineSkull: {
+        name: 'bovineSkull',
+        count: 2, 
+        image: 'bovineSkull.png',
+        onFirstclick: function(){
+            displayEffect('Death lingers here...');
+        },
+        onMatch: function(){
+            displayEffect('a bovine critter died here');
+        },
+    },
+    deer: {
+        name: 'deer',
+        count: 2, 
+        image: 'deer.png',
+        onFirstclick: function(){
+            displayEffect('This seems promising...');
+        },
+        onMatch: function(){
+            displayEffect('You spot a deer far in the distance');
+        },
+    },
+    tumbleweed: {
+        name: 'tumbleweed',
+        count: 2, 
+        image: 'tumbleweed.png',
+        onFirstclick: function(){
+            displayEffect('Tumbleweed tumbleweed tumbleweed');
+        },
+        onMatch: function(){
+            displayEffect('A tumbleweed rolls in the distance');
+        },
+    },
+}
+function applyDefaultsToAllCardData(data, defaults){
+    for(var key in data){
+        applyDefaultsToObjects(data[key], defaults);
+    }
+}
+function applyDefaultsToObjects(object, defaultVals){
+    for(var key in defaultVals){
+        if(object[key]=== undefined){
+            object[key] = defaultVals[key];
+        }
+    }
+}
+function chooseRandom(array){
+    return array[ Math.floor(Math.random() * array.length)];
+}
+var defaultMethods = {
+    onClick: ()=>{},
+    onMatch: ()=>{},
+    onMissmatch: ()=>{
+        shiftLifeIndicator(-10);
+    },
+    onFirstclick: ()=>{},
+    onSecondclick: ()=>{}
+}
+
+
+function playSound(src, volume=1){
+    var sound = new Audio();
+    sound.src=src;
+    sound.volume=volume;
+    sound.play();
+}
+
+
+function displayEffect(message){
+    $('#mainText').text(message);
+}
+function shiftLifeIndicator(amount){
+    var startingPoint = healthData.currentHealth;
+    var endingPoint = healthData.currentHealth+amount;
+
+    if(amount<0){
+        var action='addClass';
+        var direction = -1;
+        playSound('http://www.pacdv.com/sounds/domestic_sound_effects/can-to-table-1.wav', .2);
+    } else {
+        var action='removeClass';
+        direction = 1;
+        playSound('http://www.soundjay.com/appliances/sounds/coffee-pot-pick-up-1.mp3', .2);
+    }
+    for(healthIndex = startingPoint; healthIndex!=endingPoint; healthIndex+=direction){
+        $(healthData.segments[healthIndex-1])[action]('depleted');
+    }
+    //$(time[timerBarDepletionCounter]).addClass('depleted');
+    healthData.currentHealth+=amount;
+    checkForDeath();
+}
+function drainLife(totalAmount){
+
+}
+
+
 var cardMemory = null;
 var cardsCurrentlyFlipped = 0;
 var winCondition = 0;
 var timerBarDepletionCounter = -1;
 var totalWins = 0;
 var totalDeaths = 0;
+var cardClicksDisabled = false;
 
-
-$(document).ready(dealCards);
 
 Array.prototype.cardShuffle = function () {
 
@@ -43,54 +318,74 @@ Array.prototype.cardShuffle = function () {
         this[randomNumber] = tempValue;
     }
 };
+function populateTimerBar(cardArray){
+    var timerBars = [];
+    for (i = 0; i < (cardArray.length * 3); i++) {
+        timerBars.push($('<div class="timerBar">'));
+    }
+    return timerBars;
+}
 
-function dealCards() {
-    console.log('Dealing Cards ...');
-    var card = "";
-    var timerBar = "";
+function dealCards(cardData, cardTypeCount) {
+    var card = null;
+    var cardTypeArray = Object.keys(cardData);
     cardTypeArray.cardShuffle();
-    for (i = 0; i < cardTypeArray.length; i++) {
-        card = ($('<div>', {
-            class: "card",
-            type: cardTypeArray[i],
-            onclick: 'revealCardFace(this)'
-        }));
+    cardTypeArray = cardTypeArray.slice(cardTypeCount);
+    var cardsToAppend = [];
+    for (let i = 0; i < cardTypeArray.length; i++) {
+        var thisCardName = cardTypeArray[i];
+        var thisCardData = cardData[thisCardName];
+        for(let cardCount=0; cardCount<thisCardData.count; cardCount++){
+            card = $('<div>', {
+                class: "card",
+                type: cardTypeArray[i],
+                on:{
+                    click: handleCardClick,
+                }
+            });  
+            cardsToAppend.push(card);          
+        }
 
-        $('#gameBody').append(card);
+
+        
         console.log('the ' + i + ' card was created');
     }
-    for (i = 0; i < (cardTypeArray.length * 3); i++) {
-        timerBar = ($('<div class="timerBar">'));
-        $('#rightSideBar').append(timerBar);
-    }
+    return cardsToAppend;
+    
+
     themeSong.pause();
     themeSong.play();
 }
 
-function revealCardFace(clickInput) {
-    var clickedCard = $(clickInput);
-    var cardType = $(clickInput).attr('type');
-    console.log('Card Clicked');
+function handleCardClick() {
+    var clickElement = this;
+    if(cardClicksDisabled){
+        return;
+    }
+    var clickedCard = $(clickElement);
+    var cardType = clickedCard.attr('type');
     cardsCurrentlyFlipped++;
     clickedCard.addClass(cardType).removeClass('card');
     cardClickSound.play();
-    var time = document.getElementsByClassName('timerBar');
 
     if (cardMemory === null && cardsCurrentlyFlipped === 1) {
         cardMemory = [];
         cardMemory.push(cardType);
-        console.log('First card ' + cardType + ' was added to memory.');
         clickedCard.addClass('disableClick');
+        cardTypes[clickedCard.attr('type')].onFirstclick();
 
     }else if (cardMemory !== null && cardsCurrentlyFlipped === 2) {
-        console.log('Second card ' + cardType + ' was added to memory.');
+        cardTypes[clickedCard.attr('type')].onSecondclick();
         cardMemory.push(cardType);
-        console.log('checking to see if ' + cardMemory[0] + ' === ' +cardMemory[1]);
 
         if(cardMemory[0] !== cardMemory[1]){
-            console.log('No Match');
+            displayEffect('pick a card!');
+            cardTypes[clickedCard.attr('type')].onMissmatch();
+
             $('.card').addClass('disableClick');
+            cardClicksDisabled=true;
             setTimeout (function() {
+                cardClicksDisabled=false;
                 noMatchSound.play();
                 $('.card').removeClass('disableClick');
                 var firstCard = cardMemory[0];
@@ -99,99 +394,20 @@ function revealCardFace(clickInput) {
                 $("[type='" + secondCard + "']").removeClass('disableClick exhaustion dysentery typhoid measles freshWater heartyFood restStop oxen river tree rifle cactus bovineSkull deer tumbleweed').addClass('card');
                 cardMemory = null;
                 cardsCurrentlyFlipped = 0;
-                for(i=0;i<2;i++) {
-                    timerBarDepletionCounter++;
-                    $(time[timerBarDepletionCounter]).addClass('depleted');
-                }
 
                 $('#accuracy').text('ACCURACY : ' + Math.round(60 / timerBarDepletionCounter) + '%');
             }, 600);
         }
 
-        if (cardMemory[0] === cardMemory[1]) {
+        else if (cardMemory[0] === cardMemory[1]) {
+            cardTypes[clickedCard.attr('type')].onMatch();
             console.log('Its a Match!');
             $("[type='" + cardMemory[0] + "']").addClass('disableClick');
             $("[type='" + cardMemory[1] + "']").addClass('disableClick');
 
-            if (cardMemory[0] === "exhaustion" && cardMemory[1] === "exhaustion"){
-                console.log('You Are Exhausted...');
-                $('#mainText').text('You Are Exhausted...');
-                ailmentSound.play();
-                for(i=0;i<6;i++) {
-                    timerBarDepletionCounter++;
-                    $(time[timerBarDepletionCounter]).addClass('depleted');
-                }
-            }
+            //cardData[cardMemory[0]].onClick(time, timerBarDepletionCounter);
 
-            else if(cardMemory[0]  === "dysentery" && cardMemory[1] === "dysentery"){
-                console.log('You Have Dysentery...');
-                $('#mainText').text('You Have Dysentery...');
-                ailmentSound.play();
-                for(i=0;i<8;i++) {
-                    timerBarDepletionCounter++;
-                    $(time[timerBarDepletionCounter]).addClass('depleted');
-                }
-            }
-
-            else if(cardMemory[0] === "typhoid" && cardMemory[1] === "typhoid"){
-                console.log('You Have Typhoid...');
-                $('#mainText').text('You Have Typhoid...');
-                ailmentSound.play();
-                for(i=0;i<6;i++) {
-                    timerBarDepletionCounter++;
-                    $(time[timerBarDepletionCounter]).addClass('depleted');
-                }
-            }
-
-            else if(cardMemory[0] === "measles" && cardMemory[1] === "measles"){
-                console.log('You Have Measles...');
-                $('#mainText').text('You Have Measles...');
-                ailmentSound.play();
-                for(i=0;i<8;i++) {
-                    timerBarDepletionCounter++;
-                    $(time[timerBarDepletionCounter]).addClass('depleted');
-                }
-            }
-
-            else if(cardMemory[0] === "freshWater" && cardMemory[1] === "freshWater"){
-                console.log('Hydration');
-                $('#mainText').text('You Feel Hydrated!');
-                cardMatchSound.play();
-                for(i=0;i<4;i++) {
-                    $(time[timerBarDepletionCounter]).removeClass('depleted');
-                    timerBarDepletionCounter--;
-                }
-            }
-
-            else if(cardMemory[0] === "heartyFood" && cardMemory[1] === "heartyFood"){
-                console.log('Yummy Food');
-                $('#mainText').text('You Feel Full!');
-                cardMatchSound.play();
-                for(i=0;i<4;i++) {
-                    $(time[timerBarDepletionCounter]).removeClass('depleted');
-                    timerBarDepletionCounter--;
-                }
-            }
-
-            else if(cardMemory[0] === "restStop" && cardMemory[1] === "restStop"){
-                console.log('Yummy Food');
-                $('#mainText').text('You Feel Rested!');
-                cardMatchSound.play();
-                for(i=0;i<4;i++) {
-                    $(time[timerBarDepletionCounter]).removeClass('depleted');
-                    timerBarDepletionCounter--;
-                }
-            }
-
-            else if(cardMemory[0] === "rifle" && cardMemory[1] === "rifle"){
-                console.log('Yummy Food');
-                $('#mainText').text('You Gain Food From Your Hunt!');
-                cardMatchSound.play();
-                for(i=0;i<4;i++) {
-                    $(time[timerBarDepletionCounter]).removeClass('depleted');
-                    timerBarDepletionCounter--;
-                }
-            }
+            
 
             cardMatchSound.play();
             cardMemory = null;
@@ -201,14 +417,19 @@ function revealCardFace(clickInput) {
         }
     }
 
-    if (timerBarDepletionCounter >= cardTypeArray.length * 3) {
-        console.log('You Lose');
-        $('#mainText').text('You Have Died...');
+
+}
+
+function checkForDeath(){
+    debugger;
+    if (healthData.currentHealth <= 0) {
+
+        displayEffect('You Have Died...');
         $('.card').addClass('disableClick');
         totalDeaths++;
         $('#totalDeaths').text('DEATHS : ' + totalDeaths);
-        ailmentSound.play();
-    }
+        playSound('soundFX/WilhelmScream.wav');
+    }    
 }
 
 function winGame(){
