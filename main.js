@@ -1,5 +1,9 @@
 var cardsToUse = 9;
 var audioOn = true;
+var cardsMatched = null;
+var cardsToMatch = null;
+var gamePlaying = true;
+var backgroundStopper = null;
 
 var playingSounds = {};
 
@@ -22,9 +26,11 @@ function initializeApplication(){
     applyDefaultsToAllCardData(cardTypes, defaultMethods);
     addEventHandlers();
 }
+function getCurrentAccuracy(attempts, possibleRight){
 
+}
 function addEventHandlers(){
-    $("#aboutMeButton").click(openTheAboutModal);
+    $("#aboutMeButton").click(function(){ openTheAboutModal() });
     $("#gameResetButton").click(resetGame);
     $("#audioToggle").click(toggleAudio);
 }
@@ -62,7 +68,7 @@ function toggleAudio(){
     audioOn = !audioOn;
     var audioText = '';
     if(audioOn){
-        playBackgroundSounds();
+        backgroundStopper = playBackgroundSounds();
         audioText = 'Mute';
     } else {
         stopAllSounds();
@@ -75,6 +81,7 @@ function stopAllSounds(){
     for(var soundPlayers in playingSounds){
         if(playingSounds[soundPlayers].constructor === HTMLAudioElement){
             playingSounds[soundPlayers].pause();
+            delete playingSounds[soundPlayers];
         }
     }
 }
@@ -289,7 +296,7 @@ function chooseRandom(array){
     return array[ Math.floor(Math.random() * array.length)];
 }
 function playBackgroundSounds(){
-    playSound('soundFX/main_song.mp3', .3, true);
+    return playSound('soundFX/main_song.mp3', .3, true);
 }
 
 
@@ -363,8 +370,7 @@ function drainLife(totalAmount, callback, timerPerTick=1000){
     function drainLifePerInterval(){
         shiftLifeIndicator(shiftDirection);
         totalAbs--;
-        console.log(totalAbs);
-        if(totalAbs===0 || healthData.currentHealth<=0){
+        if(!gamePlaying || totalAbs===0 || healthData.currentHealth<=0){
             clearInterval(timer);
             heartbeatStopFunction();
             $("#rightSideBar").removeClass('ailing healing');
@@ -415,6 +421,7 @@ function dealCards(cardData, cardTypeCount) {
         var thisCardName = cardTypeArray[i];
         var thisCardData = cardData[thisCardName];
         for(let cardCount=0; cardCount<thisCardData.count; cardCount++){
+            cardsToMatch++;
             card = $('<div>', {
                 class: "card",
                 type: cardTypeArray[i],
@@ -425,7 +432,7 @@ function dealCards(cardData, cardTypeCount) {
             cardsToAppend.push(card);          
         }
     }
-    playBackgroundSounds();
+    backgroundStopper = playBackgroundSounds();
     return cardsToAppend;
     
     
@@ -486,8 +493,8 @@ function handleCardClick() {
             playMatchSound();
             cardMemory = null;
             cardsCurrentlyFlipped = 0;
-            winCondition++;
-            winGame();
+            cardsMatched+=2;
+            winGameCheck(cardsMatched, cardsToMatch);
         }
     }
 
@@ -505,14 +512,17 @@ function checkForDeath(){
     }    
 }
 
-function winGame(){
-    if(winCondition === 15){
-        console.log('You Win');
-        winSound.play();
-        $('#mainText').text('You Made It to Oregon!');
+function winGameCheck(currentCards, totalCardPairs){
+    if(currentCards === totalCardPairs){
+        gamePlaying=false;
+        stopAllSounds();
+        backgroundStopper();
+        playWinSound();
+        var text = `You made it to Oregon<br>
+        WINS: ${totalWins}<br>
+        ACCURACY: ${getCurrentAccuracy()}`;
+        openTheAboutModal(text);
         totalWins++;
-        $('#totalWins').text('WINS : ' + totalWins);
-        $('#accuracy').text('ACCURACY : ' + Math.round(60 / timerBarDepletionCounter) + '%');
     }
 }
 
@@ -528,16 +538,16 @@ function resetGame(){
 
 }
 
-function openTheAboutModal(){
-    var aboutMeModal = $('.aboutModal');
+function openTheAboutModal(content = $("#aboutTemplate>*").clone()){
+    var aboutMeModal = $('#aboutModal');
     var openModal = $('#aboutMeButton');
     aboutMeModal.addClass('modalVisibility');
-    $('.card').addClass('disableClick')
-
+    $('.card').addClass('disableClick');
+    $("#modalBody").empty().append(content);
 }
 
 function closeTheModal() {
-    var aboutMeModal = $('.aboutModal');
+    var aboutMeModal = $('#aboutModal');
     var closeModal = $('#closeModalButton');
     aboutMeModal.removeClass('modalVisibility');
     $('.card').removeClass('disableClick');

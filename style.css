@@ -1,3 +1,11 @@
+@font-face {
+    font-family: MECC;
+    src: url('Fonts/MECC.ttf');
+}
+html{
+    font-size: 3vmin;
+    font-family: MECC, sans-serif;
+}
 body{
     width: 100vw;
     height: 100vh;
@@ -14,10 +22,7 @@ body{
     font-size: 1rem;
 }
 
-@font-face {
-    font-family: MECC;
-    src: url('Fonts/MECC.ttf');
-}
+
 
 @font-face {
     font-family: Adine;
@@ -33,7 +38,6 @@ body{
     display: inline-block;
     box-sizing: border-box;
     color: white;
-    font-family: MECC;
 }
 
 header {
@@ -104,10 +108,7 @@ header {
     height: 65%;
     background-color: black;
     box-sizing: border-box;
-    #display: inline-flex;
-    #flex-direction: row;
-    #flex-wrap: wrap;
-    #justify-content: space-evenly;
+
 }
 #gameBody > * {
     float: left;
@@ -209,7 +210,6 @@ footer > button{
     font-size: 10px;
     background-color: #202020;
     color: white;
-    font-family: MECC;
     cursor: pointer;
     border-radius: 5%;
     margin: 0 5%;
@@ -333,14 +333,14 @@ footer > button{
 
 }
 
-.aboutModal {
+#aboutModal {
 
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 45%;
-    height: 90%;
+    width: 90vw;
+    height: 90vh;
     background-image: url(images/parchment.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -348,33 +348,40 @@ footer > button{
     color: black;
     font-family: cursive;
     text-align: center;
-    padding-top: 14vh;
 
 }
+#modalBody{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10%;
+    text-align: center;
+}
 
-.modalVisibility{
+
+#aboutModal.modalVisibility{
 
     display: block;
 
 }
 
-p {
-    font-size: 1.35vw;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 15px;
+#aboutModal p {
+    font-size: .5rem;
+
 }
 
 #closeModalButton{
-
-    font-size: 1.9vw;
-    font-family: MECC;
+    position: fixed;
+    font-size: 1rem;
+    bottom: 5%;
+    left: 50%;
     margin-top: 15px;
     color: white;
+    transform: translateX(-50%);
     background-color: black;
     padding: 2%;
     border-radius: 5px;
-
 }
 
 #closeModalButton:hover {
@@ -387,3 +394,6 @@ a{
     font-size: 1.2vw;
 }
 
+#aboutTemplate{
+    display: hidden;
+}
