@@ -203,6 +203,7 @@ footer > button{
     cursor: pointer;
     border-radius: 5%;
     margin: 0 5%;
+    border: none;
 }
 #gameResetButton{
     
