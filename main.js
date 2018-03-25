@@ -138,6 +138,7 @@ function playSound(src, volume=1, repeat=false){
     sound.play();
 
     function stopSound(){
+        debugger;
         pause = true;
         sound.pause();
     }
@@ -350,7 +351,6 @@ function winGameCheck(currentCards, totalCardPairs){
 
 function resetGame(){
     gamePlaying=true;
-    cardsToUse = 9;
     audioOn = true;
     cardsMatched = null;
     cardsToMatch = null;
