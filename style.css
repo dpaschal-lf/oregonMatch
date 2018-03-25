@@ -1,0 +1,398 @@
+*, body, html {
+
+    margin:0;
+    padding:0;
+    border: 0;
+    font-size: 0;
+
+}
+
+@font-face {
+
+    font-family: MECC;
+    src: url('Fonts/MECC.ttf');
+}
+
+@font-face {
+    font-family: Adine;
+    src: url('Fonts/Adine_Kirnberg.ttf');
+}
+
+#container {
+
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: inline-block;
+    box-sizing: border-box;
+    color: white;
+    font-family: MECC;
+
+}
+
+header {
+
+    width: 100vw;
+    height: 25vh;
+    background-color: black;
+    display: inline-block;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+
+}
+
+#banner {
+
+    background-color: black;
+    height: 18vh;
+    width: 60%;
+    background-image: url(images/TheOregonTrailTitle.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: block;
+    margin: auto;
+
+}
+
+#mainTextDisplay span {
+
+    width: auto;
+    height: auto;
+    display: inline-block;
+    background-color: black;
+    text-align: center;
+    font-size: 2.2vmin;
+    color: white;
+    border: solid white 5px;
+    border-radius: 6px;
+    padding: 4px 30px;
+    margin-top: 1vh;
+
+}
+
+#leftSideBar {
+
+    width: 14.8vw ;
+    height: 65vh;
+    background-color: black;
+    display: inline-block;
+    font-size: 10px;
+    text-align: left;
+    color: white;
+    vertical-align: top;
+
+}
+
+#leftSideBar > div{
+
+    background-color: black;
+    display: block;
+    font-size: 1.4vmin;
+    text-align: left;
+    color: white;
+    padding-top: 2vh;
+    padding-left: 50px;
+
+
+}
+
+#leftImg {
+
+    height: 65vh;
+    width: 2.2vw;
+    background-image: url(images/oregonTrailLeftSideBarImage.png);
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: top;
+    display: inline-block;
+    text-align: right;
+
+}
+
+#gameBody {
+
+    width: 66vw;
+    height: 65vh;
+    background-color: black;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+#rightSideBar {
+
+    width: 14.8vw;
+    height: 65vh;
+    background-color:black;
+    display: inline-block;
+    font-size: 10px;
+    text-align: center;
+    color: white;
+    vertical-align: top;
+
+}
+
+.timerBar {
+
+    width: 5vw;
+    height: .43vh;
+    background-color: chartreuse;
+    display: block;
+    margin: 2px;
+    margin-left: 5vw;
+    text-align: center;
+
+}
+
+.timerBar.depleted {
+    background-color: grey;
+    width: 4vw;
+    margin-left: 5.5vw;
+
+}
+
+#rightImg {
+
+    height: 65vh;
+    width: 2.2vw;
+    background-image: url(images/oregonTrailRightSideBarImage.png);
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: top;
+    display: inline-block;
+
+}
+
+footer {
+
+    width: 100vw;
+    height: 5vh;
+    background-color: black;
+    display: inline-block;
+    text-align: center;
+}
+
+
+#gameBody > div {
+    width: 5.2vw;
+    height: 8vw;
+    margin: .7vw;
+    margin-top: 3vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+
+}
+
+.card {
+
+    background-image: url(images/cardback.png);
+
+}
+
+#gameBody > div.card:hover {
+
+    width: 5.5vw;
+    height: 8.3vw;
+    margin: .55vw;
+    margin-top: 1vh;
+    background-image: url(images/cardback.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+
+}
+
+#gameResetButton{
+    font-size: 10px;
+    height:3vh;
+    width: 4vw;
+    background-color: #202020;
+    color: white;
+    font-family: MECC;
+    cursor: pointer;
+    border-radius: 5%;
+}
+
+#aboutMeButton{
+
+    font-size: 10px;
+    height:3vh;
+    width: 4vw;
+    background-color: #202020;
+    color: white;
+    font-family: MECC;
+    cursor: pointer;
+    border-radius: 5%;
+    float: left;
+    margin-right: -7vw;
+    margin-left: 3vw;
+
+}
+
+#aboutMeButton:hover {
+
+    background-color: gray;
+
+}
+
+#gameResetButton:hover {
+
+    background-color: gray;
+
+}
+
+.disableClick {
+    pointer-events: none;
+
+}
+
+.exhaustion{
+
+    background-image: url(images/exhaustion.png);
+
+}
+
+.dysentery{
+
+    background-image: url(images/dysentery.png);
+
+}
+
+.typhoid{
+
+    background-image: url(images/typhoid.png);
+
+}
+
+.measles{
+
+    background-image: url(images/measles.png);
+
+}
+
+.freshWater{
+
+    background-image: url(images/freshWater.png);
+
+}
+
+.heartyFood{
+
+    background-image: url(images/heartyFood.png);
+
+}
+
+.restStop{
+
+    background-image: url(images/restStop.png);
+}
+
+.oxen{
+
+    background-image: url(images/oxen.png);
+
+}
+
+.river{
+
+    background-image: url(images/river.png);
+
+
+}
+
+.tree{
+
+    background-image: url(images/tree.png);
+
+}
+.rifle{
+
+    background-image: url(images/rifle.png);
+
+}
+
+.cactus{
+
+    background-image: url(images/cactus.png);
+
+}
+
+.bovineSkull{
+
+    background-image: url(images/bovineSkull.png);
+
+}
+
+.deer{
+
+    background-image: url(images/deer.png);
+
+}
+
+.tumbleweed{
+
+    background-image: url(images/tumbleweed.png);
+
+}
+
+.aboutModal {
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45%;
+    height: 90%;
+    background-image: url(images/parchment.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: none;
+    color: black;
+    font-family: cursive;
+    text-align: center;
+    padding-top: 14vh;
+
+}
+
+.modalVisibility{
+
+    display: block;
+
+}
+
+p {
+    font-size: 1.35vw;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 15px;
+}
+
+#closeModalButton{
+
+    font-size: 1.9vw;
+    font-family: MECC;
+    margin-top: 15px;
+    color: white;
+    background-color: black;
+    padding: 2%;
+    border-radius: 5px;
+
+}
+
+#closeModalButton:hover {
+
+    background-color: gray;
+
+}
+
+a{
+    font-size: 1.2vw;
+}
+

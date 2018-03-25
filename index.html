@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Memory Match!</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="container">
+        <header>
+            <div id="banner"></div>
+            <div id="mainTextDisplay">
+                <span id ="mainText">Match The Cards!</span>
+            </div>
+        </header>
+        <div id="leftSideBar">
+            <div id="totalWins">WINS : 0</div>
+            <div id="totalDeaths">DEATHS : 0</div>
+            <div id="accuracy">ACCURACY : 0%</div>
+        </div>
+        <div id="leftImg"></div>
+        <div id="gameBody"></div>
+        <div id="rightImg"></div>
+        <div id="rightSideBar"></div>
+        <footer>
+            <button id ="aboutMeButton" onclick="openTheAboutModal()">About</button>
+            <button id ="gameResetButton" onclick="resetGame()">Reset Game</button>
+        </footer>
+    </div>
+    <div class="aboutModal" id="aboutModal">
+        <h1>About</h1>
+        <p>Welcome to my match memory tribute to the old classic game "The Oregon Trail". My name is Andrew Harrington and what you see here is a project that pushed my coding limits in Javascript/Jquery and CSS. I learned quite a bit from this project and I plan on adding more features soon. You can contact me <a href="#">HERE</a> for any questions.</p>
+        <p>The concept of the game is to match cards within a certain amount of guesses. There are several matches that will increase your timer. If you match all your cards before the timer runs out then you have made it to Oregon!</p>
+        <p>BEWARE! When you match a pair of "Ailment" cards, you will see your timer drop DRASTICALLY. </p>
+        <button id ="closeModalButton" onclick="closeTheModal()">Return To Game</button>
+    </div>
+</body>
+</html>
