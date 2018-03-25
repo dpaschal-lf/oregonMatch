@@ -12,24 +12,29 @@
 </head>
 <body>
     <div id="container">
-        <header>
+         <header>
             <div id="banner"></div>
             <div id="mainTextDisplay">
                 <span id ="mainText">Match The Cards!</span>
             </div>
-        </header>
-        <div id="leftSideBar">
-            <div id="totalWins">WINS : 0</div>
-            <div id="totalDeaths">DEATHS : 0</div>
-            <div id="accuracy">ACCURACY : 0%</div>
-        </div>
-        <div id="leftImg"></div>
-        <div id="gameBody"></div>
-        <div id="rightImg"></div>
-        <div id="rightSideBar"></div>
+        </header> 
+        <main id="mainContents">
+             <div id="leftSideBar">
+                <div id="totalWins">WINS : 0</div>
+                <div id="totalDeaths">DEATHS : 0</div>
+                <div id="accuracy">ACCURACY : 0%</div>
+            </div>
+            <div id="gameBody">
+                <div id="leftImg"></div>
+                <div id="cardContainer"></div>
+                <div id="rightImg"></div>
+            </div>
+            <div id="rightSideBar"></div>         
+        </main>
         <footer>
             <button id ="aboutMeButton" onclick="openTheAboutModal()">About</button>
             <button id ="gameResetButton" onclick="resetGame()">Reset Game</button>
+            <button id="audioToggle"><span>mute</span> audio</button>
         </footer>
     </div>
     <div class="aboutModal" id="aboutModal">

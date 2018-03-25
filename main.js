@@ -19,10 +19,18 @@ var themeSong = new Audio();
 //     this.play();
 // }
 $(document).ready(initializeApplication);
-
+var defaultMethods = {
+    onClick: ()=>{},
+    onMatch: ()=>{},
+    onMissmatch: ()=>{
+        shiftLifeIndicator(-3);
+    },
+    onFirstclick: ()=>{},
+    onSecondclick: ()=>{}
+}
 function initializeApplication(){
     var cards = dealCards(cardTypes, cardsToUse);
-    $('#gameBody').append(cards);
+    $('#cardContainer').append(cards);
     var timerBars = populateTimerBar(cards);
     $('#rightSideBar').append(timerBars);
     initializeHealthData(timerBars);
@@ -256,15 +264,7 @@ function applyDefaultsToObjects(object, defaultVals){
 function chooseRandom(array){
     return array[ Math.floor(Math.random() * array.length)];
 }
-var defaultMethods = {
-    onClick: ()=>{},
-    onMatch: ()=>{},
-    onMissmatch: ()=>{
-        shiftLifeIndicator(-10);
-    },
-    onFirstclick: ()=>{},
-    onSecondclick: ()=>{}
-}
+
 
 
 function playSound(src, volume=1, repeat=false){
@@ -324,7 +324,7 @@ function drainLife(totalAmount, callback, timerPerTick=1000){
         shiftLifeIndicator(shiftDirection);
         totalAbs--;
         console.log(totalAbs);
-        if(totalAbs===0){
+        if(totalAbs===0 || healthData.currentHealth<=0){
             clearInterval(timer);
             heartbeatStopFunction();
             callback();
@@ -388,11 +388,10 @@ function dealCards(cardData, cardTypeCount) {
         
         console.log('the ' + i + ' card was created');
     }
+    playSound('soundFX/main_song.mp3', .3, true);
     return cardsToAppend;
     
-
-    themeSong.pause();
-    themeSong.play();
+    
 }
 
 function handleCardClick() {
