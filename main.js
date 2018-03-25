@@ -1,4 +1,4 @@
-var cardsToUse = 9;
+var cardsToUse = 2;
 var audioOn = true;
 var cardsMatched = null;
 var cardsToMatch = null;
@@ -93,9 +93,6 @@ function terminateAllTimers(){
         }
     }
 }
-
-var cardTypeArray = ['exhaustion','exhaustion','dysentery','dysentery','typhoid','typhoid','measles','measles','freshWater','freshWater','heartyFood','heartyFood','restStop','restStop','oxen','oxen','river','river','tree','tree','rifle','rifle','cactus','cactus','bovineSkull','bovineSkull','deer','deer','tumbleweed','tumbleweed'];
-
 
 function applyDefaultsToAllCardData(data, defaults){
     for(var key in data){
@@ -240,7 +237,7 @@ function dealCards(cardData, cardTypeCount) {
     var card = null;
     var cardTypeArray = Object.keys(cardData);
     cardTypeArray.cardShuffle();
-    cardTypeArray = cardTypeArray.slice(cardTypeCount);
+    cardTypeArray = cardTypeArray.slice(0,cardTypeCount);
     var cardsToAppend = [];
     for (let i = 0; i < cardTypeArray.length; i++) {
         var thisCardName = cardTypeArray[i];
