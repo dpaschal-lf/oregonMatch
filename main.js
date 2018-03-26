@@ -26,6 +26,7 @@ function initializeApplication(){
     $('#rightSideBar').append(timerBars);
     initializeHealthData(timerBars);
     applyDefaultsToAllCardData(cardTypes, defaultMethods);
+    debugger;
     addEventHandlers();
     backgroundStopper = playBackgroundSounds();
 }
@@ -35,7 +36,7 @@ function getCurrentAccuracy(attempts, possibleRight){
 function addEventHandlers(){
     $("#aboutMeButton").click(function(){ openTheAboutModal() });
     $("#gameResetButton").click(resetGame);
-    $("#audioToggle").click(toggleAudio);
+    $("#audioToggle").click(function(){ toggleAudio() });
 }
 
 function playClickSound(){
@@ -67,9 +68,14 @@ function initializeHealthData(segments){
     }    
 }
 
-function toggleAudio(){
-    audioOn = !audioOn;
+function toggleAudio(forceOff=false){
+    
     var audioText = '';
+    if(forceOff){
+        audioOn = false;
+    } else {
+        audioOn = !audioOn;
+    }
     if(audioOn){
         backgroundStopper = playBackgroundSounds();
         audioText = 'Mute';
@@ -351,18 +357,26 @@ function winGameCheck(currentCards, totalCardPairs){
 
 function resetGame(){
     gamePlaying=true;
-    audioOn = true;
+    var previousAudio = audioOn;
     cardsMatched = null;
     cardsToMatch = null;
     //stopAllSounds();
-    backgroundStopper()
+    toggleAudio(true);
     terminateAllTimers();
     $('#cardContainer').empty();
     $('#rightSideBar').empty();
     cardsCurrentlyFlipped = 0;
     cardMemory = null;
-    displayEffect('Match The Cards!');
-    initializeApplication();
+    displayEffect('Match The Cards!');  
+    var cards = dealCards(cardTypes, cardsToUse);
+    $('#cardContainer').append(cards);
+    var timerBars = populateTimerBar(cards);
+    $('#rightSideBar').append(timerBars);
+    initializeHealthData(timerBars);
+    applyDefaultsToAllCardData(cardTypes, defaultMethods);
+    debugger;
+    toggleAudio(!previousAudio);
+    backgroundStopper = playBackgroundSounds();
 
 }
 
