@@ -1,10 +1,12 @@
-var cardsToUse = 2;
+var cardsToUse = 9;
 var audioOn = true;
 var cardsMatched = null;
 var cardsToMatch = null;
 var gamePlaying = true;
 var backgroundStopper = null;
 var healthData;
+var matchAttempts=null;
+
 
 var playingSounds = {};
 var waitingClears = {};
@@ -26,12 +28,12 @@ function initializeApplication(){
     $('#rightSideBar').append(timerBars);
     initializeHealthData(timerBars);
     applyDefaultsToAllCardData(cardTypes, defaultMethods);
-    debugger;
     addEventHandlers();
     backgroundStopper = playBackgroundSounds();
 }
-function getCurrentAccuracy(attempts, possibleRight){
-
+function getCurrentAccuracy(possibleRight,attempts){
+    debugger;
+    return ((possibleRight / attempts)*100).toFixed(2);
 }
 function addEventHandlers(){
     $("#aboutMeButton").click(function(){ openTheAboutModal() });
@@ -277,7 +279,7 @@ function handleCardClick() {
     cardsCurrentlyFlipped++;
     clickedCard.addClass(cardType);
     playSound('soundFX/card_clicked.wav');
-
+    matchAttempts++;
     if (cardMemory === null && cardsCurrentlyFlipped === 1) {
         cardMemory = [];
         cardMemory.push(cardType);
@@ -305,7 +307,6 @@ function handleCardClick() {
                 cardMemory = null;
                 cardsCurrentlyFlipped = 0;
 
-                $('#accuracy').text('ACCURACY : ' + Math.round(60 / timerBarDepletionCounter) + '%');
             }, 600);
         }
 
@@ -326,6 +327,8 @@ function handleCardClick() {
             winGameCheck(cardsMatched, cardsToMatch);
         }
     }
+    $('#accuracy').text('ACCURACY : ' + getCurrentAccuracy(cardsMatched, matchAttempts));
+
 
 
 }
@@ -360,7 +363,6 @@ function resetGame(){
     var previousAudio = audioOn;
     cardsMatched = null;
     cardsToMatch = null;
-    //stopAllSounds();
     toggleAudio(true);
     terminateAllTimers();
     $('#cardContainer').empty();
@@ -374,7 +376,6 @@ function resetGame(){
     $('#rightSideBar').append(timerBars);
     initializeHealthData(timerBars);
     applyDefaultsToAllCardData(cardTypes, defaultMethods);
-    debugger;
     toggleAudio(!previousAudio);
     backgroundStopper = playBackgroundSounds();
 
