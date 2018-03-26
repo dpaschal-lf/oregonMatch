@@ -1,4 +1,4 @@
-var cardsToUse = 9;
+var cardsToUse = 2;
 var audioOn = true;
 var cardsMatched = null;
 var cardsToMatch = null;
@@ -32,7 +32,6 @@ function initializeApplication(){
     backgroundStopper = playBackgroundSounds();
 }
 function getCurrentAccuracy(possibleRight,attempts){
-    debugger;
     return ((possibleRight / attempts)*100).toFixed(2);
 }
 function addEventHandlers(){
@@ -101,6 +100,7 @@ function terminateAllTimers(){
             waitingClears[stopFunction]();
         }
     }
+
 }
 
 function applyDefaultsToAllCardData(data, defaults){
@@ -130,6 +130,11 @@ function playSound(src, volume=1, repeat=false){
     var sound = new Audio();
     var currentTimestamp = Date.now();
     playingSounds[currentTimestamp] = sound;
+    sound.oncanplay = function(){
+        if(audioOn && !pause){
+            sound.play()
+        }
+    }
     sound.src=src;
     sound.volume=volume;
     var pause = false;
@@ -144,11 +149,9 @@ function playSound(src, volume=1, repeat=false){
         }
     }
 
-    sound.play();
-
     function stopSound(){
-        debugger;
         pause = true;
+        console.log('test');
         sound.pause();
     }
     return stopSound;
@@ -346,13 +349,17 @@ function checkForDeath(){
 
 function winGameCheck(currentCards, totalCardPairs){
     if(currentCards === totalCardPairs){
+        var previousAudio = audioOn;
         terminateAllTimers();
+        debugger;
+        console.log('about to toggle audio');
         stopAllSounds();
-        backgroundStopper();
+        //toggleAudio(true);
+        //toggleAudio(previousAudio);
         playWinSound();
         var text = `You made it to Oregon<br>
         WINS: ${totalWins}<br>
-        ACCURACY: ${getCurrentAccuracy()}`;
+        ACCURACY: ${getCurrentAccuracy(cardsMatched, matchAttempts)}`;
         openTheAboutModal(text);
         totalWins++;
     }
