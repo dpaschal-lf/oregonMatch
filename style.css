@@ -78,8 +78,8 @@ header {
 .wheel{
     border-radius: 50%;
     border: 10px solid white;
-    width: 5vw;
-    height: 5vw;
+    width: 5vmin;
+    height: 5vmin;
     position: absolute;
     bottom: -24%;
     -webkit-animation: turn 1s linear infinite;
