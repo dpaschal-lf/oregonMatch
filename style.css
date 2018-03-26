@@ -63,7 +63,7 @@ header {
     position: absolute;
 }
 #oxen{
-    background-image: url(images/oxen.png);
+    background-image: url(images/oxenAnim.png);
     background-size: 200% 100%;
     background-repeat: no-repeat;
     background-position: 0px 0px;
