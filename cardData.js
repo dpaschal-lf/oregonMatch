@@ -107,6 +107,8 @@ var cardTypes = {
         },
         onMatch: function(){
             displayEffect('You see oxen');
+            addObjectToBackgroundAnimation('images/oxen.png');
+            setTimeout(addObjectToBackgroundAnimation, 1000, 'images/oxen.png')
         },
     },
     river: {
@@ -118,6 +120,7 @@ var cardTypes = {
         },
         onMatch: function(){
             displayEffect('You encounter a muddy river');
+            addObjectToBackgroundAnimation('images/river.png')
         },
     },
     tree: {
@@ -129,6 +132,7 @@ var cardTypes = {
         },
         onMatch: function(){
             displayEffect('You encounter a lone tree');
+            addObjectToBackgroundAnimation('images/tree.png')
         },
     },
     rifle: {
@@ -153,6 +157,7 @@ var cardTypes = {
         },
         onMatch: function(){
             displayEffect('You see a lone cactus');
+            addObjectToBackgroundAnimation('images/cactus.png')
         },
     },
     bovineSkull: {
@@ -164,6 +169,7 @@ var cardTypes = {
         },
         onMatch: function(){
             displayEffect('a bovine critter died here');
+            addObjectToBackgroundAnimation('images/oxen.png');
         },
     },
     deer: {
@@ -175,6 +181,7 @@ var cardTypes = {
         },
         onMatch: function(){
             displayEffect('You spot a deer far in the distance');
+            addObjectToBackgroundAnimation('images/deer.png')
         },
     },
     tumbleweed: {
@@ -186,6 +193,7 @@ var cardTypes = {
         },
         onMatch: function(){
             displayEffect('A tumbleweed rolls in the distance');
+            addObjectToBackgroundAnimation('images/tumbleweed.png')
         },
     },
 }

@@ -65,6 +65,22 @@ function cycleOxen(){
     setInterval(nextFrame, 500);
 }
 
+function addObjectToBackgroundAnimation( newImage ){
+    var newImage = $("<img>",{
+        src: newImage,
+        class: 'backgroundImage',
+        css: {
+            right: '100%'
+        }
+    });
+    $("header").append(newImage);
+    newImage.animate({
+        right: '-50%'
+    }, 25000, 'linear', function(){
+        newImage.remove();
+    })
+}
+
 
 function getCurrentAccuracy(possibleRight,attempts){
     return ((possibleRight / attempts)*100).toFixed(2);
