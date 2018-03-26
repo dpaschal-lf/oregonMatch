@@ -92,7 +92,7 @@ function addEventHandlers(){
 }
 
 function playClickSound(){
-    playSound('soundFX/card_clicked.wav');
+    playSound('soundFX/card_clicked.wav', .2);
 }
 function playAilmentSound(){
     playSound('soundFX/ailment.wav');
@@ -101,7 +101,7 @@ function playWinSound(){
     playSound('soundFX/win_sound.wav')
 }
 function playMatchSound(){
-    playSound('soundFX/match-made.wav');
+    playSound('soundFX/match-made.wav', .5);
 }
 function playNoMatchSound(){
     playSound('soundFX/no_match.wav');
@@ -332,7 +332,7 @@ function handleCardClick() {
     var cardType = clickedCard.attr('type');
     cardsCurrentlyFlipped++;
     clickedCard.addClass(cardType);
-    playSound('soundFX/card_clicked.wav');
+    playClickSound();
     matchAttempts++;
     if (cardMemory === null && cardsCurrentlyFlipped === 1) {
         cardMemory = [];
