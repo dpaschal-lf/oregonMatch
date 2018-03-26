@@ -8,6 +8,7 @@ var healthData;
 var matchAttempts=null;
 
 
+
 var playingSounds = {};
 var waitingClears = {};
 
@@ -30,7 +31,41 @@ function initializeApplication(){
     applyDefaultsToAllCardData(cardTypes, defaultMethods);
     addEventHandlers();
     backgroundStopper = playBackgroundSounds();
+    animateBackground();
+    cycleOxen()
 }
+var animateBackground = initiateAnimateBackground;
+function initiateAnimateBackground(){
+    var headerBackgroundSize = null;
+    var headerBackgroundPercent = 0;
+    function successiveAnimateBackground(){
+        
+        function moveBackground(){
+            headerBackgroundPercent++;
+
+            var pixelConversion = (headerBackgroundPercent/100) * headerBackgroundSize+'px';
+            $("header").css('background-position', pixelConversion+ " bottom");
+        }
+        setInterval(moveBackground, 300);
+    }
+    headerBackgroundSize = $("header").width();
+    animateBackground = successiveAnimateBackground;
+    animateBackground();
+
+}
+
+function cycleOxen(){
+    var frames = [0, -116];
+    var currentFrame = 0;
+
+    function nextFrame(){
+        currentFrame = 1 - currentFrame;
+        $("#oxen").css('background-position', frames[currentFrame]+'px 0px');
+    }
+    setInterval(nextFrame, 500);
+}
+
+
 function getCurrentAccuracy(possibleRight,attempts){
     return ((possibleRight / attempts)*100).toFixed(2);
 }

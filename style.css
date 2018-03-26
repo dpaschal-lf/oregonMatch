@@ -48,19 +48,83 @@ header {
     text-align: center;
     font-size: 18px;
     color: white;
+    background-image: url(images/background.jpg);
+    background-position: bottom;
+    position: relative;
 }
-
+#wagon{
+    background-image: url(images/wagon.png);
+    height: 100px;
+    width: 400px;
+    left: 60%;
+    transform: translateX(-50%);
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+}
+#oxen{
+    background-image: url(images/oxen.png);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    height: 62px;
+    width: 116px;
+    position: absolute;
+    left: -3%;
+    bottom: -4%;
+}
+.wheel{
+    border-radius: 50%;
+    border: 10px solid white;
+    width: 5vw;
+    height: 5vw;
+    position: absolute;
+    bottom: -24%;
+    z-index:0;
+    -webkit-animation: turn 1s linear infinite;
+}
+@-webkit-keyframes turn {
+    from {transform: rotateZ(90deg);}
+    to {transform: rotateZ(0deg);}
+}
+.wheel::before, .wheel::after{
+    content: '';
+    height: 30%;
+    width: 100%;
+    position: absolute;
+    background-color: white;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.wheel::after{
+    transform: translateY(-50%) rotateZ(90deg);
+}
+.wheel:nth-child(1){
+    left: 34%;
+}
+.wheel:nth-child(2){
+    right: 35%;
+}
 #banner {
     background-color: black;
-    height: 18vh;
-    width: 60%;
+    height: 18%;
+    width: 30%;
     background-image: url(images/TheOregonTrailTitle.png);
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     display: block;
     margin: auto;
+    border-radius: 0% 0% 50% 50%    ;
 }
-
+#mainTextDisplay{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
 #mainTextDisplay span {
 
     width: auto;
