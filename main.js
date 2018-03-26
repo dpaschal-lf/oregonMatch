@@ -1,4 +1,4 @@
-var cardsToUse = 2;
+var cardsToUse = 9;
 var audioOn = true;
 var cardsMatched = null;
 var cardsToMatch = null;
@@ -386,7 +386,6 @@ function winGameCheck(currentCards, totalCardPairs){
     if(currentCards === totalCardPairs){
         var previousAudio = audioOn;
         terminateAllTimers();
-        debugger;
         console.log('about to toggle audio');
         stopAllSounds();
         //toggleAudio(true);
