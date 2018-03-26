@@ -344,6 +344,7 @@ footer > button{
     background-image: url(images/parchment.png);
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     display: none;
     color: black;
     font-family: cursive;
@@ -395,5 +396,5 @@ a{
 }
 
 #aboutTemplate{
-    display: hidden;
+    display: none;
 }

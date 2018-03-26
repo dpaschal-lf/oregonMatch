@@ -27,6 +27,7 @@ function initializeApplication(){
     initializeHealthData(timerBars);
     applyDefaultsToAllCardData(cardTypes, defaultMethods);
     addEventHandlers();
+    backgroundStopper = playBackgroundSounds();
 }
 function getCurrentAccuracy(attempts, possibleRight){
 
@@ -255,7 +256,6 @@ function dealCards(cardData, cardTypeCount) {
             cardsToAppend.push(card);          
         }
     }
-    backgroundStopper = playBackgroundSounds();
     return cardsToAppend;
     
     
@@ -362,9 +362,7 @@ function resetGame(){
     cardsCurrentlyFlipped = 0;
     cardMemory = null;
     displayEffect('Match The Cards!');
-    
     initializeApplication();
-    gamePlaying=true;
 
 }
 
